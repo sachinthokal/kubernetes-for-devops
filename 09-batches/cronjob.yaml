@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hourly-cleanup-cronjob
+spec:
+  # Cron Syntax: Minute Hour Day-of-month Month Day-of-week
+  # खालील नियम दर १ मिनिटाला चालवण्यासाठी आहे:
+  schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 3 # पूर्ण झालेल्या किती जुन्या Jobs चा रेकॉर्ड ठेवायचा
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: cleaner
+            image: busybox
+            command: ["sh", "-c", "echo 'Cleaning temp files at' $(date)"]
+            command: ["sh", "-c", "sleep 30"]

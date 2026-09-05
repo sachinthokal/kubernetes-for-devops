@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: math-calculation-job
+spec:
+  # अयशस्वी झाल्यास किती वेळा प्रयत्न करायचा (Default: 6)
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure # Job साठी Never किंवा OnFailure च लागते (Always चालत नाही)
+      containers:
+      - name: worker
+        image: busybox
+        command: ["sh", "-c", "echo 'Calculating pi...'; sleep 5; echo 'Done!'"]
